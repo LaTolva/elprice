@@ -27,13 +27,18 @@ if ($LASTEXITCODE -ne 0) {
     git remote add origin "https://github.com/$repoOwner/$repoName.git"
 }
 
-# Get the publish profile from Azure
-Write-Host "Getting publish profile from Azure..."
-$publishProfile = az webapp deployment list-publishing-profiles `
-    --name "app-elprice" `
-    --resource-group "rg-elprice-lasse" `
-    --query "[?publishMethod=='MSDeploy']" `
-    --output json
+Write-Host "Please download the publish profile from Azure Portal:"
+Write-Host "1. Go to https://portal.azure.com"
+Write-Host "2. Navigate to App Service 'app-elprice'"
+Write-Host "3. Click 'Get publish profile' button"
+Write-Host "4. Save the downloaded file"
+Write-Host ""
+Write-Host "Enter the path to the downloaded publish profile file:"
+$publishProfilePath = Read-Host
+
+# Read the publish profile
+Write-Host "Reading publish profile..."
+$publishProfile = Get-Content -Path $publishProfilePath -Raw
 
 # Create the secret in GitHub
 Write-Host "Creating GitHub secret..."
